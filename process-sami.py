@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 # http://en.wikipedia.org/wiki/SAMI
 # From .smi (SAMI subtitle format)
@@ -20,37 +21,41 @@
 
 # Open file.
 import os.path
+import codecs
 import re
 from os.path import expanduser
 
-SOURCE_FILENAME = "/Dropbox/smi_to_srt/sami.txt"
+SOURCE_FILENAME = "sami.txt"
 TARGET_FILENAME = "/Dropbox/smi_to_srt/sami.srt"
 
-def main:
+def main():
     # Get file name and path.
     home = expanduser("~")
     filepath = os.path.join(home, SOURCE_FILENAME)
-
+    print filepath
     # Import lines into a list.
-    lines = import_lines_from_file()
+    lines = import_lines_from_file(filepath)
 
     # Get index of <BODY> tags to get content area.
     start_index = [i for i, v in enumerate(lines) if "<BODY>" in v][0]
     end_index = [i for i, v in enumerate(lines) if "</BODY>" in v][0]
 
     if start_index and end_index is not None:
-        dosomething
+        # Grab content elements only.
+        dialoglines = lines[start_index+1:end_index]        
     else:
         sys.exit(-1)
 
-    # Grab content elements only.
-    dialoglines = lines[start_index+1:end_index]
+    # Create dictionary processing.
+    d = get_indexed_dict(dialoglines)
 
+    # Process dictionary to build resulting strture.
+    sd = get_shaped_dict(d)
+    sd = mark_line_endings(sd)
 
-def get_dict_from_list(list):
-    # Dictionary from contect area
-    d = { i:val for i, val in enumerate(list) }
-    return d    
+    for i, v in sd.iteritems():
+        print i, v
+        print v["content"]
 
 
 def process_lines(lines):
@@ -58,9 +63,29 @@ def process_lines(lines):
     pass
 
 
+def get_indexed_dict(list):
+    # Dictionary from contect area
+    d = { i:val for i, val in enumerate(list) }
+    return d
+
+
+def get_shaped_dict(dict):
+    dd = { k:{ "start":extract_timestamp(v), "content": extract_dialog(v) } for k, v in dict.iteritems() }
+    return dd
+
+
+def mark_line_endings(shaped_dict):
+    for k, v in shaped_dict.iteritems():
+        # 
+        if is_clearing_line(v["content"]):
+            shaped_dict[k]["end"] = v["start"]
+            shaped_dict[k]["start"] = None
+    return shaped_dict
+
 def import_lines_from_file(filepath):
-    fo = open(filepath, "rw+")
-    lines = fo.readliness()
+    print filepath
+    fo = codecs.open(filepath, "r", "utf-8")
+    lines = fo.readlines()
     fo.close()
     return lines
 

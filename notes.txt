@@ -7,14 +7,43 @@ TIME LOG
 
 NOTES
 =====
-put into a dictionary
+First convert raw lines into a dictionary indexed by their order:
+{ 
+	345: "<SYNC Start=5879709><P Class=KRCC>\r\n",
+	346: "\xeb\xb0\x98\xeb\xa9\xb4 \xed\x83\x9c\xeb\x8f\x84\xeb\x8a\x94 \xec\x97\xbd\xec\xa0\x84\xea\xb3\xbc \xea\xb0\x99\xec\x95\x84\xec\x95\xbc \xed\x95\x9c\xeb\x8b\xa4.\r\n",
+	347: "<SYNC Start=5865876><P Class=KRCC>&nbsp;\r\n"
+}	
 
-{ "index": 33848, "content": "<SYNC Start=67126><P Class=KRCC>\r\n"}
-{ "index": 33849, "content": "(*\xec\x97\xad\xec\xa3\xbc: \xec\x97\xbd\xec\xa4\x80 - \xec\x97\xbd\xeb\xac\xb8\xec\x9d\x98 \xec\x95\x84\xeb\x93\xa4)\r\n"}
-{ "index": 33850, "content": "<SYNC Start=69917><P Class=KRCC>&nbsp;\r\n"}
 
+This is how the intermediate structure should look like:
 
-{ "index": 33848, "start": 3894855, "end": 0, dialog": "Content here"}
+{ 
+	345:
+	{
+		"type": "start"
+		"start": 3894855, 
+		"end": None, 
+		"dialog": "\r"
+	},	
+	346:
+	{ 
+		"type": "content"
+		"start": None, 
+		"end": None, 
+		"dialog": "You said that everything would be OK!\r"
+	},
+	347:
+	{ 
+		"type": "end"
+		"start": None, 
+		"end": 3896475, 
+		"dialog": "&nbsp;\r"
+	}
+}
+
+Processing:
+- Collapse entries w/o start times into their closest parent entry
+- 
 
 
 # Make into dictionary with index as keys
