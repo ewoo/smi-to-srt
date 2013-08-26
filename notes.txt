@@ -1,0 +1,40 @@
+put into a dictionary
+
+{ "index": 33848, "content": "<SYNC Start=67126><P Class=KRCC>\r\n"}
+{ "index": 33849, "content": "(*\xec\x97\xad\xec\xa3\xbc: \xec\x97\xbd\xec\xa4\x80 - \xec\x97\xbd\xeb\xac\xb8\xec\x9d\x98 \xec\x95\x84\xeb\x93\xa4)\r\n"}
+{ "index": 33850, "content": "<SYNC Start=69917><P Class=KRCC>&nbsp;\r\n"}
+
+
+{ "index": 33848, "start": 3894855, "end": 0, dialog": "Content here"}
+
+# 40 mins
+# 40 start
+4:14PM
+
+
+# Make into dictionary with index as keys
+>>> d = { i:val for i, val in enumerate(lines) }
+
+# Function to extract timestamp
+def extract_timestamp(content):
+  regex = re.compile("Start=(\d+)")
+  match = regex.search(content)
+  if match:
+  	return int(match.group(1))
+
+# Build new list
+[extract(v) for k, v in l.iteritems()]
+
+# Convert timestamp to timedelta and reformat
+delta = datetime.timedelta(milliseconds=5885584)
+reformatted = str(delta).replace(".",",")[:-3]
+
+
+def ec(line):
+  regex = re.compile("<[p|P][^>]*>(.*$)")
+  match = regex.search(line)
+  if match:
+	return match.group(1).rstrip(os.linesep)
+  else:
+  	return line.rstrip(os.linesep)
+
