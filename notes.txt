@@ -1,3 +1,12 @@
+TIME LOG
+========
+40 mins
+40 mins
+75 mins
+
+
+NOTES
+=====
 put into a dictionary
 
 { "index": 33848, "content": "<SYNC Start=67126><P Class=KRCC>\r\n"}
@@ -6,10 +15,6 @@ put into a dictionary
 
 
 { "index": 33848, "start": 3894855, "end": 0, dialog": "Content here"}
-
-# 40 mins
-# 40 start
-4:14PM
 
 
 # Make into dictionary with index as keys
@@ -38,3 +43,29 @@ def ec(line):
   else:
   	return line.rstrip(os.linesep)
 
+
+# Build dictionary
+
+for l in dialog:
+    if "<SYNC " in l and not linesopen:
+        linesopen = true
+        # beginstamp = Start=617126
+        # get begin stamp, convert to timedelta
+        # collect lines-text = content
+
+        lastlinesstamp = delta
+    if "<SYNC + nbsp" in l:
+        # grab endstamp
+        linesopen = false
+
+if linesopen:
+    # close out lines
+
+d = [{key:value} for (key,value) in enumerate(dialog)]
+
+
+#Write out the liness
+
+
+# 40 mins
+# 2:40 start

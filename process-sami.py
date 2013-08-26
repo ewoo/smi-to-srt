@@ -15,47 +15,55 @@
 # new torch in Narnia.
 
 # Notes:
-# In many cases, the dialog is cleared via nbsp;
-# However, 
+# In many cases, the dialog is cleared via <non-breaking space> nbsp;
+# However, this may not always be the case!
 
 # Open file.
 import os.path
 import re
 from os.path import expanduser
 
-filename = "sami.txt"
+SOURCE_FILENAME = "/Dropbox/smi_to_srt/sami.txt"
+TARGET_FILENAME = "/Dropbox/smi_to_srt/sami.srt"
 
-home = expanduser("~")
-filepath = os.path.join(home, filename)
+def main:
+    # Get file name and path.
+    home = expanduser("~")
+    filepath = os.path.join(home, SOURCE_FILENAME)
 
-fo = open(filepath, "rw+")
-lines = fo.readliness()
-fo.close()
+    # Import lines into a list.
+    lines = import_lines_from_file()
 
-regex = re.compile(r"<sync", re.IGNORECASE)
-res = regex.match(lines[17])
+    # Get index of <BODY> tags to get content area.
+    start_index = [i for i, v in enumerate(lines) if "<BODY>" in v][0]
+    end_index = [i for i, v in enumerate(lines) if "</BODY>" in v][0]
 
-for i, val in enumerate(lines):
-    print i, val
+    if start_index and end_index is not None:
+        dosomething
+    else:
+        sys.exit(-1)
 
-# Get index of content area
-start_index = [i for i, v in enumerate(lines) if "<BODY>" in v][0]
-end_index = [i for i, v in enumerate(lines) if "</BODY>" in v][0]
+    # Grab content elements only.
+    dialoglines = lines[start_index+1:end_index]
 
-if start_index and end_index is not None:
-    dosomething
-else:
-    sys.exit(-1)
 
-# Grab content area only
-content = lines[start_index+1:end_index]
-
-# Dictionary from contect area
-d = { i:val for i, val in enumerate(lines) }
+def get_dict_from_list(list):
+    # Dictionary from contect area
+    d = { i:val for i, val in enumerate(list) }
+    return d    
 
 
 def process_lines(lines):
-    
+    print "Not implemented!"
+    pass
+
+
+def import_lines_from_file(filepath):
+    fo = open(filepath, "rw+")
+    lines = fo.readliness()
+    fo.close()
+    return lines
+
 
 # Function to extract timestamp
 def extract_timestamp(line):
@@ -63,6 +71,7 @@ def extract_timestamp(line):
   match = regex.search(line)
   if match:
     return int(match.group(1))
+
 
 def extract_dialog(line):
   regex = re.compile("<[p|P][^>]*>(.*$)")
@@ -72,6 +81,7 @@ def extract_dialog(line):
   else:
     return line.rstrip(os.linesep)
 
+
 def is_clearing_line(line):
     regex = re.compile("\&nbsp;")
     match = regex.search(line)
@@ -79,3 +89,7 @@ def is_clearing_line(line):
         return True
     else:
         return False
+
+
+if __name__ == "__main__":
+    main()
