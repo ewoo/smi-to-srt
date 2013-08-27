@@ -53,7 +53,35 @@ def main():
     sd = get_shaped_dict(d)
     sd = mark_line_endings(sd)
 
-    for i, v in sd.iteritems():
+    rd = sd.copy()
+
+    last_start_key = None
+    last_start_item = None
+
+    for key, item in sd.iteritems():
+        if item["start"] is None and item["end"] is None:
+            # Content item. Concat dialog content onto the last start item.
+            print key
+            rd[last_start_key]["content"] = rd[last_start_key]["content"] + item["content"]
+            rd.pop(key)
+        elif item["end"] is None:
+            last_start_key = key
+            print "< Start >"
+        else:
+            # Dialog clear item. Move end time to closet parent start item.
+            rd[last_start_key]["end"] = item["end"]
+            rd.pop(key)
+
+        #print "key: %s start: %s end: %s" % (key, sd[key]["start"], sd[key]["end"])
+
+        # if sd[key]["start"] == None and sd[key]["end"] == None:
+        #     print "value %s" % i 
+        #     parentkey = get_closest_start_line(sd, i)
+        #     # print "Parent key: " + parentkey
+        #     if parentkey is not None:
+        #         sd[parentkey]["more_content"] = sd[parentkey]["content"] + v["content"]
+
+    for i, v in rd.iteritems():
         print i, v
         print v["content"]
 
@@ -62,6 +90,14 @@ def process_lines(lines):
     print "Not implemented!"
     pass
 
+def get_closest_start_line(dict, key):
+    if dict.get(key)["start"] is not None:
+        return key
+    else:
+        if key < 0:
+            return None
+        key = key - 1
+        get_closest_start_line(dict, key)
 
 def get_indexed_dict(list):
     # Dictionary from contect area
@@ -80,7 +116,14 @@ def mark_line_endings(shaped_dict):
         if is_clearing_line(v["content"]):
             shaped_dict[k]["end"] = v["start"]
             shaped_dict[k]["start"] = None
+        else:
+            shaped_dict[k]["end"] = None            
     return shaped_dict
+
+
+def mark_types(shaped_dict):
+    pass
+
 
 def import_lines_from_file(filepath):
     print filepath
