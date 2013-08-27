@@ -53,26 +53,39 @@ def main():
     sd = get_shaped_dict(d)
     sd = mark_line_endings(sd)
 
-    rd = sd.copy()
+    results = sd.copy()
+
+    removed_content_items = {}
+    removed_end_items = {}
 
     last_start_key = None
-    last_start_item = None
 
     for key, item in sd.iteritems():
         if item["start"] is None and item["end"] is None:
             # Content item. Concat dialog content onto the last start item.
-            print key
-            rd[last_start_key]["content"] = rd[last_start_key]["content"] + item["content"]
-            rd.pop(key)
+            results[last_start_key]["content"] = results[last_start_key]["content"] + item["content"]
+            removed_content_items[key] = results.pop(key)
         elif item["end"] is None:
             last_start_key = key
-            print "< Start >"
         else:
             # Dialog clear item. Move end time to closet parent start item.
-            rd[last_start_key]["end"] = item["end"]
-            rd.pop(key)
+            results[last_start_key]["end"] = item["end"]
+            removed_end_items[key] = results.pop(key)
 
         #print "key: %s start: %s end: %s" % (key, sd[key]["start"], sd[key]["end"])
+
+    print "Summary"
+    print "======="
+    print "%s totals lines to start" % len(d)
+    print "..."
+    print "%s content lines collapsed" % len(removed_content_items)
+    print "%s end lines collapsed" % len(removed_end_items)
+    print "..."
+    print "%s start lines dialog" % len(results)
+    print "%s without end times" % (len(results) - len(removed_end_items))
+
+
+# tcharasika@greaterlouisville.com
 
         # if sd[key]["start"] == None and sd[key]["end"] == None:
         #     print "value %s" % i 
@@ -81,7 +94,10 @@ def main():
         #     if parentkey is not None:
         #         sd[parentkey]["more_content"] = sd[parentkey]["content"] + v["content"]
 
-    for i, v in rd.iteritems():
+
+
+def dump_results(resultdict):
+    for i, v in resultdict.iteritems():
         print i, v
         print v["content"]
 
@@ -90,8 +106,8 @@ def process_lines(lines):
     print "Not implemented!"
     pass
 
-def get_closest_start_line(dict, key):
-    if dict.get(key)["start"] is not None:
+def get_closest_start_line(dd, key):
+    if dd.get(key)["start"] is not None:
         return key
     else:
         if key < 0:
@@ -99,14 +115,14 @@ def get_closest_start_line(dict, key):
         key = key - 1
         get_closest_start_line(dict, key)
 
-def get_indexed_dict(list):
+def get_indexed_dict(thislist):
     # Dictionary from contect area
-    d = { i:val for i, val in enumerate(list) }
+    d = { i:val for i, val in enumerate(thislist) }
     return d
 
 
-def get_shaped_dict(dict):
-    dd = { k:{ "start":extract_timestamp(v), "content": extract_dialog(v) } for k, v in dict.iteritems() }
+def get_shaped_dict(ind):
+    dd = { k:{ "start":extract_timestamp(v), "content": extract_dialog(v) } for k, v in ind.iteritems() }
     return dd
 
 

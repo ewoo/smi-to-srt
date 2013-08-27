@@ -3,6 +3,13 @@ TIME LOG
 40 mins
 40 mins
 75 mins
+45 mins
+
+
+Next Items
+----------
+compute dialog display times
+compute missing endtimes--mark these as "computed": true
 
 
 NOTES
