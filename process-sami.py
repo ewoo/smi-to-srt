@@ -23,6 +23,7 @@
 import os.path
 import codecs
 import re
+import datetime
 from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
@@ -74,6 +75,10 @@ def main():
 
         #print "key: %s start: %s end: %s" % (key, sd[key]["start"], sd[key]["end"])
 
+    for key, item in results.iteritems():
+        if item["end"] is not None:
+            item["duration"] = (item["end"] - item["start"])/1000.0 
+
     print "Summary"
     print "======="
     print "%s totals lines to start" % len(d)
@@ -84,16 +89,37 @@ def main():
     print "%s start lines dialog" % len(results)
     print "%s without end times" % (len(results) - len(removed_end_items))
 
+    # for key, item in results.iteritems():
+    #     #print key, item
+    #     if item.get("duration") is not None:
+    #         print "key: %s duration: %.2g secs" % (key, item.get("duration"))
+    #     else:
+    #         print "key: %s duration: None" % (key)
+    #     print item["content"]
 
-# tcharasika@greaterlouisville.com
 
-        # if sd[key]["start"] == None and sd[key]["end"] == None:
-        #     print "value %s" % i 
-        #     parentkey = get_closest_start_line(sd, i)
-        #     # print "Parent key: " + parentkey
-        #     if parentkey is not None:
-        #         sd[parentkey]["more_content"] = sd[parentkey]["content"] + v["content"]
+    # Format results into SRT.
+    index = 1
 
+    for key, item in results.iteritems():
+        start = datetime.timedelta(milliseconds=item["start"])
+
+        if item["end"] is None:
+            end = None
+        else:
+            end = datetime.timedelta(milliseconds=item["end"])
+        
+        start = str(start).replace(".",",")[:-3]
+        end = str(end).replace(".",",")[:-3]
+
+        print index
+        print "%s --> %s" % (start, end)
+        print item["content"]
+        print ""
+
+        index = index + 1
+
+    # Write to file...
 
 
 def dump_results(resultdict):
