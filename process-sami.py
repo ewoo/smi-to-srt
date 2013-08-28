@@ -102,15 +102,9 @@ def main():
     index = 1
 
     for key, item in results.iteritems():
-        start = datetime.timedelta(milliseconds=item["start"])
 
-        if item["end"] is None:
-            end = None
-        else:
-            end = datetime.timedelta(milliseconds=item["end"])
-        
-        start = str(start).replace(".",",")[:-3]
-        end = str(end).replace(".",",")[:-3]
+        start = milliseconds_to_timestamp(item["start"])
+        end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
 
         print index
         print "%s --> %s" % (start, end)
@@ -120,6 +114,11 @@ def main():
         index = index + 1
 
     # Write to file...
+
+def milliseconds_to_timestamp(ms):
+    timestamp = datetime.timedelta(milliseconds=ms)
+    timestamp = str(timestamp).replace(".",",")[:-3] # Lose a bit of precision?
+    return timestamp
 
 
 def dump_results(resultdict):
