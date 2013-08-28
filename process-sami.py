@@ -78,6 +78,9 @@ def main():
     for key, item in results.iteritems():
         if item["end"] is not None:
             item["duration"] = (item["end"] - item["start"])/1000.0 
+        else:
+            item["end"] = item["start"] + 2000 
+
 
     print "Summary"
     print "======="

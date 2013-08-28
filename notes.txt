@@ -4,10 +4,17 @@ TIME LOG
 40 mins
 75 mins
 45 mins
-
+30 mins
 
 Next Items
 ----------
+- set default constant
+- remove <br> tags
+- keep <color> tags?
+- investigate broken tags
+- refactor
+
+Completed Items
 compute dialog display times
 compute missing endtimes--mark these as "computed": true
 
