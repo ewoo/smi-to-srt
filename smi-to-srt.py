@@ -154,9 +154,12 @@ def log_to_screen(message):
 
 def milliseconds_to_timestamp(ms):
     timestamp = datetime.timedelta(milliseconds=ms)
-    timestamp = str(timestamp).replace(".",",")[:-3] # Lose a bit of precision?
+    if len(str(timestamp)) < 9:
+        timestamp = str(timestamp) + ",000"
+    else:
+        timestamp = str(timestamp).replace(".",",")[:-3] # Lose a bit of precision?
+    
     timestamp = timestamp.zfill(12)
-    print timestamp
     return timestamp
 
 
