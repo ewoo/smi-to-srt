@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"wri",
+				"write_to_file"
+			],
+			[
+				"wr",
+				"Write"
+			],
+			[
 				"s",
 				"start"
 			],
@@ -59,30 +67,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "sami.txt",
-			"settings":
-			{
-				"buffer_size": 102696,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "notes.md",
-			"settings":
-			{
-				"buffer_size": 2953,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "smi-to-srt.py",
-			"settings":
-			{
-				"buffer_size": 5564,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Nodejs/Nodejs.sublime-build",
 	"command_palette":
@@ -176,6 +160,18 @@
 	},
 	"file_history":
 	[
+		"/Users/wooyong/Dropbox/smi_to_srt/smi-to-srt.py",
+		"/Users/wooyong/Dropbox/smi_to_srt/notes.md",
+		"/Users/wooyong/Movies/Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt",
+		"/Users/wooyong/Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt",
+		"/Users/wooyong/Movies/Oblivion.2013.720p.BRRip.x264.AC3-PTpOWeR.srt",
+		"/Users/wooyong/sami.txt",
+		"/Users/wooyong/sami.txt.bak.txt",
+		"/Users/wooyong/Movies/Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt.eng.srt",
+		"/Users/wooyong/output.srt",
+		"/Users/wooyong/sami.txt.old.txt",
+		"/Users/wooyong/Dropbox/smi_to_srt/sami.txt",
+		"/Users/wooyong/Dropbox/smi_to_srt/.gitignore",
 		"/Users/wooyong/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/wooyong/Library/Application Support/Sublime Text 2/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
 		"/Users/wooyong/Dropbox/smi_to_srt/notes.txt",
@@ -186,7 +182,6 @@
 		"/Users/wooyong/Movies/hero special.srt",
 		"/Users/wooyong/Movies/Kiwidisk/The Woodsman and the Rain/The.Woodsman.And.The.Rain.2011.XviD.AC3-AhLongG.srt",
 		"/Users/wooyong/Dropbox/smi_to_srt/process-sami.py",
-		"/Users/wooyong/Movies/Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt",
 		"/Users/wooyong/Movies/Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt.test",
 		"/Users/wooyong/Desktop/sample.srt",
 		"/Users/wooyong/Dropbox/todos/130823-todos.txt",
@@ -292,18 +287,7 @@
 		"/Users/wooyong/.ssh/id_rsa.pub",
 		"/Users/wooyong/.ssh/id_rsa",
 		"/Users/wooyong/Dropbox/2013 Project List",
-		"/Users/wooyong/Dropbox/2012 Project List",
-		"/Users/wooyong/Dropbox/2012 Heartland/RESTful API Research Notes/2012 Project List",
-		"/Users/wooyong/Dropbox/2012 Heartland/RESTful API Research Notes/HPS Dev Portal Automated Testing",
-		"/private/etc/bashrc",
-		"/Users/wooyong/.bashrc",
-		"/Users/wooyong/.bash",
-		"/Users/wooyong/Library/Application Support/Sublime Text 2/Packages/User/Package Control.sublime-settings",
-		"/Users/wooyong/Dropbox/2012 HPS Dev Portal Notes",
-		"/Users/wooyong/Dropbox/2012 Heartland/RESTful API Research Notes/2012 Dec Heartland",
-		"/Users/wooyong/Dropbox/2012 Heartland/RESTful API Research Notes/2012 Car Processing & Developer Portal Notes",
-		"/Users/wooyong/Dropbox/2012 Heartland/RESTful API Research Notes/2012 HPS Dev Portal Notes",
-		"/Users/wooyong/Dropbox/Authorize .NET"
+		"/Users/wooyong/Dropbox/2012 Project List"
 	],
 	"find":
 	{
@@ -322,6 +306,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"</font>",
+			"<font color=yellow>",
+			"</font color>",
+			"<font color=#ffff00>",
+			"</font>",
+			"<font",
+			"<i",
 			"font",
 			"rd",
 			"list",
@@ -443,360 +434,8 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "sami.txt",
-					"settings":
-					{
-						"buffer_size": 102696,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								341,
-								345
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"origin_encoding": "UTF-8",
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": true,
-							"sublimelinter_gutter_marks_theme": "simple",
-							"sublimelinter_mark_style": "none",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "notes.md",
-					"settings":
-					{
-						"buffer_size": 2953,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								181,
-								335
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"origin_encoding": "ASCII",
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": true,
-							"sublimelinter_gutter_marks_theme": "simple",
-							"sublimelinter_mark_style": "none",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 112.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "smi-to-srt.py",
-					"settings":
-					{
-						"buffer_size": 5564,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5276,
-								5276
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"origin_encoding": "UTF-8",
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": true,
-							"sublimelinter_gutter_marks_theme": "simple",
-							"sublimelinter_mark_style": "none",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 1.0,
-						"translation.y": 2232.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -880,6 +519,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 221.0,
+	"side_bar_width": 191.0,
 	"status_bar_visible": true
 }

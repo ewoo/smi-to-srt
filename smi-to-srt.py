@@ -27,7 +27,7 @@ import datetime
 from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
-TARGET_FILENAME = "Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt"
+TARGET_FILENAME = "output.srt"
 
 def main():
     # Get file name and path.
@@ -118,7 +118,7 @@ def main():
         exportlines.append("%s%s" % (index, os.linesep))
         exportlines.append("%s --> %s%s" % (start, end, os.linesep))
         exportlines.append("%s%s" % (item["content"], os.linesep))
-        exportlines.append("%s" % os.linesep)
+#        exportlines.append("%s" % os.linesep)
 
         index = index + 1
 
@@ -209,13 +209,13 @@ def extract_dialog(line):
         line = match.group(1)
 
     # Remove <br> tags
-    line = re.sub("<[B|b][r|R]>", os.linesep, line)
+    line = re.sub("<[B|b][r|R]>", "", line)
 
-    regex = re.compile("<font")
-    match = regex.search(line)
-    # If there are open font tags, close them
-    if match:
-        line = line + "</font>" 
+    # regex = re.compile("<font")
+    # match = regex.search(line)
+    # # If there are open font tags, close them
+    # if match:
+    #     line = line + "</font>" 
 
     print "after: %s" % line
     return line
