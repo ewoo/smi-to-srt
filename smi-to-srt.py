@@ -74,26 +74,8 @@ def main():
             # Fill-in missing end times!!
             item["end"] = item["start"] + 2000 
 
-    # Format results into SRT.
-    index = 1
-    exportlines = []
-
-    for key, item in results.iteritems():
-
-        start = milliseconds_to_timestamp(item["start"])
-        end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
-
-        if VERBOSE:
-            print index
-            print "%s --> %s" % (start, end)
-            print item["content"]
-
-        exportlines.append("%s%s" % (index, os.linesep))
-        exportlines.append("%s --> %s%s" % (start, end, os.linesep))
-        exportlines.append("%s%s" % (item["content"], os.linesep))
-#        exportlines.append("%s" % os.linesep)
-
-        index = index + 1
+    # Format results into SRT.    
+    exportlines = intermediate_dict_to_srtlines(results)
 
     # Write to file...
     write_to_file(os.path.join(home, TARGET_FILENAME), exportlines)
@@ -129,6 +111,28 @@ def build_intermediate_dict_from_lines(linesList):
 
     return intermediate_dict
 
+def intermediate_dict_to_srtlines(intermediate_dict):
+    srtlines = []
+    index = 1
+
+    for key, item in intermediate_dict.iteritems():
+
+        start = milliseconds_to_timestamp(item["start"])
+        end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
+
+        if VERBOSE:
+            print index
+            print "%s --> %s" % (start, end)
+            print item["content"]
+
+        srtlines.append("%s%s" % (index, os.linesep))
+        srtlines.append("%s --> %s%s" % (start, end, os.linesep))
+        srtlines.append("%s%s" % (item["content"], os.linesep))
+
+        index = index + 1
+    
+    return srtlines
+
 
 def extract_dialog_lines(allLines):
     dialogLines = None
@@ -152,6 +156,7 @@ def milliseconds_to_timestamp(ms):
     timestamp = datetime.timedelta(milliseconds=ms)
     timestamp = str(timestamp).replace(".",",")[:-3] # Lose a bit of precision?
     timestamp = timestamp.zfill(12)
+    print timestamp
     return timestamp
 
 
@@ -209,26 +214,22 @@ def extract_timestamp(line):
 
 
 def extract_dialog(line):
-    print ""
-    print "before: %s" % line  
+
+    if VERBOSE:
+        print "before: %s" % line
+
     # Extract inner text from <P> tag
     regex = re.compile("<[p|P][^>]*>(.*$)")
-    # line = re.sub(r"/^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/", "", line)
     match = regex.search(line)
     if match:
-        # TOOD: Replace only \r\n (windows style) with \n
         line = match.group(1)
 
     # Remove <br> tags
     line = re.sub("<[B|b][r|R]>", "", line)
 
-    # regex = re.compile("<font")
-    # match = regex.search(line)
-    # # If there are open font tags, close them
-    # if match:
-    #     line = line + "</font>" 
-
-    print "after: %s" % line
+    if VERBOSE:
+        print "after: %s" % line
+    
     return line
 
 
