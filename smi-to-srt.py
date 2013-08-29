@@ -27,7 +27,7 @@ import datetime
 from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
-TARGET_FILENAME = "output.srt"
+TARGET_FILENAME = "Iron.Man.3.2013.BRRip.XviD.AC3-ETRG.srt"
 
 def main():
     # Get file name and path.
@@ -184,7 +184,7 @@ def import_lines_from_file(filepath):
     return lines
 
 def write_to_file(filepath, lines):
-    fw = codecs.open(filepath, "w+", "utf-8")
+    fw = codecs.open(filepath, "w+", "utf-8-sig")
     fw.writelines(lines)
     fw.close()
     return
