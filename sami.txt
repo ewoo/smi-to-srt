@@ -3520,7 +3520,7 @@ Bravo!
 <SYNC Start=5859084><P Class=KRCC>
 잎이 무성할수록 뿌리를 깊이 내려라.
 <SYNC Start=5861917><P Class=KRCC>&nbsp;
-<SYNC Start=5863792><P Class=KRCC>
+<SYNC Start=5863792><P Class=KRCC>Test value
 반면 태도는 엽전과 같아야 한다.
 <SYNC Start=5865876><P Class=KRCC>&nbsp;
 <SYNC Start=5866917><P Class=KRCC>

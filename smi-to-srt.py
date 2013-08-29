@@ -27,7 +27,7 @@ import datetime
 from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
-TARGET_FILENAME = "/Dropbox/smi_to_srt/sami.srt"
+TARGET_FILENAME = "output.srt"
 
 def main():
     # Get file name and path.
@@ -82,15 +82,15 @@ def main():
             item["end"] = item["start"] + 2000 
 
 
-    print "Summary"
-    print "======="
-    print "%s totals lines to start" % len(d)
-    print "..."
-    print "%s content lines collapsed" % len(removed_content_items)
-    print "%s end lines collapsed" % len(removed_end_items)
-    print "..."
-    print "%s start lines dialog" % len(results)
-    print "%s without end times" % (len(results) - len(removed_end_items))
+    # print "Summary"
+    # print "======="
+    # print "%s totals lines to start" % len(d)
+    # print "..."
+    # print "%s content lines collapsed" % len(removed_content_items)
+    # print "%s end lines collapsed" % len(removed_end_items)
+    # print "..."
+    # print "%s start lines dialog" % len(results)
+    # print "%s without end times" % (len(results) - len(removed_end_items))
 
     # for key, item in results.iteritems():
     #     #print key, item
@@ -103,6 +103,7 @@ def main():
 
     # Format results into SRT.
     index = 1
+    exportlines = []
 
     for key, item in results.iteritems():
 
@@ -114,9 +115,15 @@ def main():
         print item["content"]
         print ""
 
+        exportlines.append("%s%s" % (index, os.linesep))
+        exportlines.append("%s --> %s%s" % (start, end, os.linesep))
+        exportlines.append("%s%s" % (item["content"], os.linesep))
+        exportlines.append("%s" % os.linesep)
+
         index = index + 1
 
     # Write to file...
+    write_to_file(os.path.join(home, TARGET_FILENAME), exportlines)
 
 def milliseconds_to_timestamp(ms):
     timestamp = datetime.timedelta(milliseconds=ms)
@@ -176,6 +183,11 @@ def import_lines_from_file(filepath):
     fo.close()
     return lines
 
+def write_to_file(filepath, lines):
+    fw = codecs.open(filepath, "w+", "utf-8")
+    fw.writelines(lines)
+    fw.close()
+    return
 
 # Function to extract timestamp
 def extract_timestamp(line):
@@ -186,12 +198,27 @@ def extract_timestamp(line):
 
 
 def extract_dialog(line):
-  regex = re.compile("<[p|P][^>]*>(.*$)")
-  match = regex.search(line)
-  if match:
-    return match.group(1).rstrip(os.linesep)
-  else:
-    return line.rstrip(os.linesep)
+    print ""
+    print "before: %s" % line  
+    # Extract inner text from <P> tag
+    regex = re.compile("<[p|P][^>]*>(.*$)")
+    # line = re.sub(r"/^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/", "", line)
+    match = regex.search(line)
+    if match:
+        # TOOD: Replace only \r\n (windows style) with \n
+        line = match.group(1)
+
+    # Remove <br> tags
+    line = re.sub("<[B|b][r|R]>", os.linesep, line)
+
+    regex = re.compile("<font")
+    match = regex.search(line)
+    # If there are open font tags, close them
+    if match:
+        line = line + "</font>" 
+
+    print "after: %s" % line
+    return line
 
 
 def is_clearing_line(line):
