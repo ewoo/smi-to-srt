@@ -8,29 +8,20 @@ Time Log
 75 mins
 45 mins
 30 mins
+25 mins 8/29
 
-Total: about 4 hours
 
 Next Items
 ----------
-- convert <br> into line-endings (Windows?)
-
-    >>> import re
-    >>> guff = """<atag>\r\n<bt\r\nag c="2">"""
-    >>> re.sub(r"(<[^>]*)\r\n([^>]*>)", r"\1\2", guff)
-    '<atag>\r\n<btag c="2">'
-    >>>
-
 - Add two zero padding
-- preserve multiline
-- keep `<font color=>` tags? and keep supported tags like `<b>` and `<i>`
-- investigate broken tags
-- Microsoft CP-1252 (default text format)
-- refactor
+- Refactor (naming intermmediate collections)
+- Adjust missing end timestamp to close to next line
+- Arguments (file in, file out, verbose, generate intermediate file/csv)
+- Verbose output with summary stats
 
-Lower Priority
---------------
-- set default constant to reasonable amount
+Extras
+------
+- millisecond offets
 
 
 Features to Add
@@ -38,8 +29,12 @@ Features to Add
 - Local charset detection
 - Toggle on-off
 
+
 Completed Items
 ---------------
+- Save to utf-8 with BOM
+- Keep font tags
+- convert <br> into line-endings (Windows?)
 - compute dialog display times
 - compute missing endtimes--mark these as "computed": true
 

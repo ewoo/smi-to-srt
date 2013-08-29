@@ -28,60 +28,77 @@ from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
 TARGET_FILENAME = "output.srt"
+VERBOSE = False
 
 def main():
+    
     # Get file name and path.
     home = expanduser("~")
     filepath = os.path.join(home, SOURCE_FILENAME)
+
+    # Debug
     print filepath
-    # Import lines into a list.
-    lines = import_lines_from_file(filepath)
 
-    # Get index of <BODY> tags to get content area.
-    start_index = [i for i, v in enumerate(lines) if "<BODY>" in v][0]
-    end_index = [i for i, v in enumerate(lines) if "</BODY>" in v][0]
-
-    if start_index and end_index is not None:
-        # Grab content elements only.
-        dialoglines = lines[start_index+1:end_index]        
-    else:
-        sys.exit(-1)
+    sourceLines = import_lines_from_SAMIfile(filepath)
+    sourceLines = extract_dialog_lines(sourceLines)
 
     # Create dictionary processing.
-    d = get_indexed_dict(dialoglines)
+    intermediateStore = build_intermediate_dict_from_lines(sourceLines)
 
-    # Process dictionary to build resulting strture.
-    sd = get_shaped_dict(d)
-    sd = mark_line_endings(sd)
+    results = intermediateStore.copy()
 
-    results = sd.copy()
-
+    # TODO: Move this into a summary class.
     removed_content_items = {}
     removed_end_items = {}
 
-    last_start_key = None
+    lastProcessedStartElementKey = None
 
-    for key, item in sd.iteritems():
+    # Collate dialog content onto the start elements
+    for key, item in intermediateStore.iteritems():
         if item["start"] is None and item["end"] is None:
             # Content item. Concat dialog content onto the last start item.
-            results[last_start_key]["content"] = results[last_start_key]["content"] + item["content"]
+            results[lastProcessedStartElementKey]["content"] = results[lastProcessedStartElementKey]["content"] + item["content"]
             removed_content_items[key] = results.pop(key)
         elif item["end"] is None:
-            last_start_key = key
+            lastProcessedStartElementKey = key
         else:
             # Dialog clear item. Move end time to closet parent start item.
-            results[last_start_key]["end"] = item["end"]
+            results[lastProcessedStartElementKey]["end"] = item["end"]
             removed_end_items[key] = results.pop(key)
 
-        #print "key: %s start: %s end: %s" % (key, sd[key]["start"], sd[key]["end"])
-
+    # Compute meta data that indicates duration of each dialog line--a sanity check.
     for key, item in results.iteritems():
         if item["end"] is not None:
             item["duration"] = (item["end"] - item["start"])/1000.0 
         else:
+            # Fill-in missing end times!!
             item["end"] = item["start"] + 2000 
 
+    # Format results into SRT.
+    index = 1
+    exportlines = []
 
+    for key, item in results.iteritems():
+
+        start = milliseconds_to_timestamp(item["start"])
+        end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
+
+        if VERBOSE:
+            print index
+            print "%s --> %s" % (start, end)
+            print item["content"]
+
+        exportlines.append("%s%s" % (index, os.linesep))
+        exportlines.append("%s --> %s%s" % (start, end, os.linesep))
+        exportlines.append("%s%s" % (item["content"], os.linesep))
+#        exportlines.append("%s" % os.linesep)
+
+        index = index + 1
+
+    # Write to file...
+    write_to_file(os.path.join(home, TARGET_FILENAME), exportlines)
+
+    # Display results summary.
     # print "Summary"
     # print "======="
     # print "%s totals lines to start" % len(d)
@@ -101,33 +118,40 @@ def main():
     #     print item["content"]
 
 
-    # Format results into SRT.
-    index = 1
-    exportlines = []
+def build_intermediate_dict_from_lines(linesList):
+    # Build an indexed dictionary from list
+    linesDict = { i:val for i, val in enumerate(linesList) }
 
-    for key, item in results.iteritems():
+    # Process lines in dictionary to build resulting intermediate storage structure.
+    # See notes.md for example
+    intermediate_dict = { k:{ "start":extract_timestamp(v), "content": extract_dialog(v) } for k, v in linesDict.iteritems() }
+    intermediate_dict = mark_line_endings(intermediate_dict)
 
-        start = milliseconds_to_timestamp(item["start"])
-        end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
+    return intermediate_dict
 
-        print index
-        print "%s --> %s" % (start, end)
-        print item["content"]
-        print ""
 
-        exportlines.append("%s%s" % (index, os.linesep))
-        exportlines.append("%s --> %s%s" % (start, end, os.linesep))
-        exportlines.append("%s%s" % (item["content"], os.linesep))
-#        exportlines.append("%s" % os.linesep)
+def extract_dialog_lines(allLines):
+    dialogLines = None
 
-        index = index + 1
+    # Get index of <BODY> tags to get content area.
+    startIndex = [i for i, v in enumerate(allLines) if "<BODY>" in v][0]
+    endIndex = [i for i, v in enumerate(allLines) if "</BODY>" in v][0]
 
-    # Write to file...
-    write_to_file(os.path.join(home, TARGET_FILENAME), exportlines)
+    if startIndex and endIndex is not None:
+        # Grab content elements only.
+        dialogLines = allLines[startIndex+1:endIndex]        
+
+    return dialogLines
+
+
+def log_to_screen(message):
+    print message
+
 
 def milliseconds_to_timestamp(ms):
     timestamp = datetime.timedelta(milliseconds=ms)
     timestamp = str(timestamp).replace(".",",")[:-3] # Lose a bit of precision?
+    timestamp = timestamp.zfill(12)
     return timestamp
 
 
@@ -150,16 +174,6 @@ def get_closest_start_line(dd, key):
         key = key - 1
         get_closest_start_line(dict, key)
 
-def get_indexed_dict(thislist):
-    # Dictionary from contect area
-    d = { i:val for i, val in enumerate(thislist) }
-    return d
-
-
-def get_shaped_dict(ind):
-    dd = { k:{ "start":extract_timestamp(v), "content": extract_dialog(v) } for k, v in ind.iteritems() }
-    return dd
-
 
 def mark_line_endings(shaped_dict):
     for k, v in shaped_dict.iteritems():
@@ -172,11 +186,8 @@ def mark_line_endings(shaped_dict):
     return shaped_dict
 
 
-def mark_types(shaped_dict):
-    pass
-
-
-def import_lines_from_file(filepath):
+def import_lines_from_SAMIfile(filepath):
+    # TODO: Convert from local charset to UTF-8
     print filepath
     fo = codecs.open(filepath, "r", "utf-8")
     lines = fo.readlines()
