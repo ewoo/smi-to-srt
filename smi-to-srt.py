@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os.path
@@ -85,7 +85,7 @@ class SummaryReport(object):
     #     else:
     #         print "key: %s duration: None" % (key)
     #     print item["content"]
-        
+
 def build_intermediate_dict_from_lines(linesList):
     # Build an indexed dictionary from list
     linesDict = { i:val for i, val in enumerate(linesList) }
