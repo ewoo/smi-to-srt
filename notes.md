@@ -15,6 +15,7 @@ Next Items
 ----------
 - Fix two zero padding bug
 - Refactor (naming intermmediate collections)
+- Exception handling: display series of lines that made it trip
 - Adjust missing end timestamp to close to next line
 - Arguments (file in, file out, verbose, generate intermediate file/csv)
 - Verbose output with summary stats

@@ -19,7 +19,6 @@
 # In many cases, the dialog is cleared via <non-breaking space> nbsp;
 # However, this may not always be the case!
 
-# Open file.
 import os.path
 import codecs
 import re
@@ -28,7 +27,7 @@ from os.path import expanduser
 
 SOURCE_FILENAME = "sami.txt"
 TARGET_FILENAME = "output.srt"
-VERBOSE = False
+VERBOSE = True
 
 def main():
     
@@ -44,6 +43,9 @@ def main():
 
     # Create dictionary processing.
     intermediateStore = build_intermediate_dict_from_lines(sourceLines)
+
+    for k, v in intermediateStore.iteritems():
+        print k, v
 
     results = intermediateStore.copy()
 
@@ -72,7 +74,7 @@ def main():
             item["duration"] = (item["end"] - item["start"])/1000.0 
         else:
             # Fill-in missing end times!!
-            item["end"] = item["start"] + 2000 
+            item["end"] = item["start"] + 2000
 
     # Format results into SRT.    
     exportlines = intermediate_dict_to_srtlines(results)
