@@ -84,6 +84,9 @@ def main(args):
     # Write to file...
     write_to_file(target_file, exportlines)
 
+    if VERBOSE:
+        print "Conversion completed. %s" % target_file
+
 
 class SummaryReport(object):
     """docstring for SummaryReport"""
@@ -175,10 +178,6 @@ def dump_results(resultdict):
         print i, v
         print v["content"]
 
-
-def process_lines(lines):
-    print "Not implemented!"
-    pass
 
 def get_closest_start_line(dd, key):
     if dd.get(key)["start"] is not None:

@@ -13,12 +13,11 @@ Time Log
 
 Next Items
 ----------
-- Fix two zero padding bug
-- Refactor (naming intermmediate collections)
-- Exception handling: display series of lines that made it trip
-- Adjust missing end timestamp to close to next line
 - Arguments (file in, file out, verbose, generate intermediate file/csv)
 - Verbose output with summary stats
+- Exception handling: display series of lines that made it trip
+- Adjust missing end timestamp to close to next line
+
 
 Extras
 ------
@@ -33,6 +32,8 @@ Features to Add
 
 Completed Items
 ---------------
+- Fix two zero padding bug
+- Refactor (naming intermmediate collections)
 - Save to utf-8 with BOM
 - Keep font tags
 - convert <br> into line-endings (Windows?)
