@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/opt/local/bin/python
 # -*- coding: utf-8 -*-
 
 # http://en.wikipedia.org/wiki/SAMI
@@ -43,10 +43,6 @@ def main():
 
     # Create dictionary processing.
     intermediateStore = build_intermediate_dict_from_lines(sourceLines)
-
-    for k, v in intermediateStore.iteritems():
-        print k, v
-
     results = intermediateStore.copy()
 
     # TODO: Move this into a summary class.
