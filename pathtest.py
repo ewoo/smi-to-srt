@@ -3,10 +3,12 @@
 
 """
 Converts SMI formatted subtitle files to SRT.
+
 Usage: 
 pathtest.py --version
 pathtest.py [-vdo FILE] SOURCE [-uf][TARGET]
 
+--version     Version number
 -v --verbose  Show logging info
 -d --debug    Ouput debugging info and save conversion data
 -o FILE       Output conversion data file [default: ./conversiondata.txt]
@@ -14,7 +16,6 @@ SOURCE        The SAMI formatted subtitle file you want to convert. Example: mov
 -u --unicode  Attempt to convert from local charset to unicode
 -f --force    Force best-guess conversion local charset to unicode
 TARGET        Name of the converted file
---version     Version number
 """
 
 import os
@@ -29,5 +30,5 @@ def main(args):
 		print line
 
 if __name__ == "__main__":
-	args = docopt(__doc__)
+	args = docopt(__doc__, version="smi-to-srt version 0.85")
 	main(args)

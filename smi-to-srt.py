@@ -1,26 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os.path
-import codecs
+"""
+Converts SMI formatted subtitle files to SRT.
+
+Usage: 
+pathtest.py --version
+pathtest.py [-vdo FILE] SOURCE [-uf][TARGET]
+
+--version     Version number
+-v --verbose  Show logging info
+-d --debug    Ouput debugging info and save conversion data
+-o FILE       Output conversion data file [default: ./conversiondata.txt]
+SOURCE        The SAMI formatted subtitle file you want to convert. Example: movie.smi
+-u --unicode  Attempt to convert from local charset to unicode
+-f --force    Force best-guess conversion local charset to unicode
+TARGET        Name of the converted file
+"""
+
+import sys
 import re
+import codecs
 import datetime
+from docopt import docopt
+import os.path
 from os.path import expanduser
 
-SOURCE_FILENAME = "sami.txt"
-TARGET_FILENAME = "output.srt"
-VERBOSE = True
+# Globals
+VERBOSE = False
 
-def main():
-    
-    # Get file name and path.
-    home = expanduser("~")
-    filepath = os.path.join(home, SOURCE_FILENAME)
+def main(args):
 
-    # Debug
-    print filepath
+    global VERBOSE
+    VERBOSE = args["--verbose"]
 
-    sourceLines = import_lines_from_SAMIfile(filepath)
+    # Set filepaths.
+    src_file = os.path.abspath(args["SOURCE"])
+
+    # If none privided, build target file name.
+    if args["TARGET"] is None:
+        filename, ext = os.path.splitext(src_file)
+        target_file = filename + ".srt"
+    else:
+        target_file = os.path.abspath(args["TARGET"])
+
+    sourceLines = import_lines_from_SAMIfile(src_file)
     sourceLines = extract_dialog_lines(sourceLines)
 
     # Create dictionary processing.
@@ -58,7 +82,7 @@ def main():
     exportlines = intermediate_dict_to_srtlines(results)
 
     # Write to file...
-    write_to_file(os.path.join(home, TARGET_FILENAME), exportlines)
+    write_to_file(target_file, exportlines)
 
 
 class SummaryReport(object):
@@ -106,6 +130,7 @@ def intermediate_dict_to_srtlines(intermediate_dict):
         start = milliseconds_to_timestamp(item["start"])
         end = milliseconds_to_timestamp(item["end"]) if item["end"] is not None else None
 
+        global VERBOSE
         if VERBOSE:
             print index
             print "%s --> %s" % (start, end)
@@ -132,10 +157,6 @@ def extract_dialog_lines(allLines):
         dialogLines = allLines[startIndex+1:endIndex]        
 
     return dialogLines
-
-
-def log_to_screen(message):
-    print message
 
 
 def milliseconds_to_timestamp(ms):
@@ -181,12 +202,27 @@ def mark_line_endings(shaped_dict):
 
 
 def import_lines_from_SAMIfile(filepath):
+    global VERBOSE
+    if VERBOSE:
+        print filepath
+
     # TODO: Convert from local charset to UTF-8
-    print filepath
-    fo = codecs.open(filepath, "r", "utf-8")
-    lines = fo.readlines()
-    fo.close()
+
+    try:
+        fo = codecs.open(filepath, "r", "utf-8")
+        lines = fo.readlines()
+        fo.close()
+    except IOError:
+        log_error_and_quit(sys.exc_info())
     return lines
+
+def log_error_and_quit(error):
+    if error[1][1]:
+        print "Uh oh. Failed to convert file. %s" % error[1][1]
+    else:
+        print "Sorry, something wen terribly wrong."
+    sys.exit(-1)
+
 
 def write_to_file(filepath, lines):
     fw = codecs.open(filepath, "w+", "utf-8-sig")
@@ -203,7 +239,7 @@ def extract_timestamp(line):
 
 
 def extract_dialog(line):
-
+    global VERBOSE
     if VERBOSE:
         print "before: %s" % line
 
@@ -232,4 +268,5 @@ def is_clearing_line(line):
 
 
 if __name__ == "__main__":
-    main()
+    args = docopt(__doc__, version="smi-to-srt version 0.85")
+    main(args)
