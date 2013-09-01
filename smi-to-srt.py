@@ -13,7 +13,7 @@ pathtest.py [-vdo FILE] SOURCE [-uf][TARGET]
 -d --debug    Ouput debugging info and save conversion data
 -o FILE       Output conversion data file [default: ./conversiondata.txt]
 SOURCE        The SAMI formatted subtitle file you want to convert. Example: movie.smi
--u --unicode  Attempt to convert from local charset to unicode
+-u --unicode  Convert from local charset and save as unicode
 -f --force    Force best-guess conversion local charset to unicode
 TARGET        Name of the converted file
 """
@@ -28,11 +28,13 @@ from os.path import expanduser
 
 # Globals
 VERBOSE = False
+CONVERT_TO_UNICODE = False
 
 def main(args):
 
-    global VERBOSE
+    global VERBOSE, CONVERT_TO_UNICODE
     VERBOSE = args["--verbose"]
+    CONVERT_TO_UNICODE = args["--unicode"]
 
     # Set filepaths.
     src_file = os.path.abspath(args["SOURCE"])
@@ -140,7 +142,8 @@ def intermediate_dict_to_srtlines(intermediate_dict):
             print item["content"]
 
         srtlines.append("%s%s" % (index, os.linesep))
-        srtlines.append("%s --> %s%s" % (start, end, os.linesep))
+        srtlines.append("%s --> %s" % (start, end))
+#        srtlines.append("%s --> %s%s" % (start, end, os.linesep))
         srtlines.append("%s%s" % (item["content"], os.linesep))
 
         index = index + 1
@@ -201,19 +204,31 @@ def mark_line_endings(shaped_dict):
 
 
 def import_lines_from_SAMIfile(filepath):
-    global VERBOSE
+    global VERBOSE, CONVERT_TO_UNICODE
     if VERBOSE:
         print filepath
 
-    # TODO: Convert from local charset to UTF-8
-
     try:
-        fo = codecs.open(filepath, "r", "utf-8")
+        if CONVERT_TO_UNICODE:
+            fo = codecs.open(filepath, "r", "utf-8")
+        else:
+            fo = codecs.open(filepath, "r")
         lines = fo.readlines()
         fo.close()
     except IOError:
         log_error_and_quit(sys.exc_info())
     return lines
+
+def write_to_file(filepath, lines):
+    global CONVERT_TO_UNICODE
+    if CONVERT_TO_UNICODE:
+        fw = codecs.open(filepath, "w+", "utf-8-sig")
+    else:
+        fw = codecs.open(filepath, "w+")        
+    fw.writelines(lines)
+    fw.close()
+    return
+
 
 def log_error_and_quit(error):
     if error[1][1]:
@@ -222,12 +237,6 @@ def log_error_and_quit(error):
         print "Sorry, something wen terribly wrong."
     sys.exit(-1)
 
-
-def write_to_file(filepath, lines):
-    fw = codecs.open(filepath, "w+", "utf-8-sig")
-    fw.writelines(lines)
-    fw.close()
-    return
 
 # Function to extract timestamp
 def extract_timestamp(line):
