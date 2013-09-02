@@ -1,5 +1,7 @@
 *.sublime-workspace
 *.sublime-project
+*.srt
+*.smi
 
 *.py[cod]
 
