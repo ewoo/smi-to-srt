@@ -25,6 +25,7 @@ import datetime
 from docopt import docopt
 import os.path
 from os.path import expanduser
+from chardet.universaldetector import UniversalDetector
 
 # Globals
 VERBOSE = False
@@ -78,6 +79,7 @@ def main(args):
             item["duration"] = (item["end"] - item["start"])/1000.0 
         else:
             # Fill-in missing end times!!
+            # TODO: Do this in a smarter way.
             item["end"] = item["start"] + 2000
 
     # Format results into SRT.    
@@ -88,6 +90,8 @@ def main(args):
 
     if VERBOSE:
         print "Conversion completed. %s" % target_file
+        if CONVERT_TO_UNICODE:
+            print "Target save as UTF-8."
 
 
 class SummaryReport(object):
@@ -210,7 +214,13 @@ def import_lines_from_SAMIfile(filepath):
 
     try:
         if CONVERT_TO_UNICODE:
-            fo = codecs.open(filepath, "r", "utf-8")
+            encoding = detect_local_charset(filepath)
+            if encoding is None:
+                if VERBOSE:
+                    print "Failed to detect local charset! Aborted."
+                    sys.exit(-1)
+            else:
+                fo = codecs.open(filepath, "r", encoding)
         else:
             fo = codecs.open(filepath, "r")
         lines = fo.readlines()
@@ -218,6 +228,35 @@ def import_lines_from_SAMIfile(filepath):
     except IOError:
         log_error_and_quit(sys.exc_info())
     return lines
+
+
+def detect_local_charset(filepath):
+    global VERBOSE
+    # Open to read in binary.
+    fp = open(filepath, "rb")
+    detector = UniversalDetector()
+
+    if VERBOSE:
+        print "Reading file to detect encoding..."
+
+    for line in fp:
+        line = line.replace(b'\r',b'')
+        detector.feed(line)
+        if detector.done:
+            break
+
+    fp.close()
+    detector.close()
+
+    if VERBOSE:
+        print "Encoding: %s" % detector.result["encoding"]
+        print "Confidence: {0:.0f}% ".format(detector.result["confidence"]*100)
+
+    if detector.result["confidence"] > 0.75:
+        encoding = detector.result["encoding"]
+        return encoding.replace('-','_').lower() # Format for codecs
+    else:
+        return None
 
 def write_to_file(filepath, lines):
     global CONVERT_TO_UNICODE
