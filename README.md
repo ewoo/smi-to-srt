@@ -24,4 +24,4 @@ Areas for Improvement
 ---------------------
 - Better missing end marker (duration) calculation
 - Some code to properly package dependencies
-- Cleaner, more python refactoring needed
+- Much more pythonic refactoring needed
